@@ -44,8 +44,7 @@ export default function MatriculaForm() {
         }
     }
 
-    const handledForm = (event) => {
-        const { name, value } = event.target;
+    const handledForm = (name, value) => {
         setMatriculado({
             ...matriculado,
             [name]: value,
@@ -57,19 +56,18 @@ export default function MatriculaForm() {
             <TextInput
                 placeholder="Nombres"
                 value={nombres}
-                onChangeText={handledForm}
+                onChangeText={(text) => handledForm("nombres", text)}
             />
             <TextInput
                 placeholder="Apellidos"
                 value={apellidos}
-                onChangeText={handledForm}
+                onChangeText={(text) => handledForm("apellidos", text)}
             />
             <TextInput
-                name="fecha_registro"
                 placeholder="CUI"
                 keyboardType="numeric"
                 value={cui}
-                onChangeText={handledForm}
+                onChangeText={(text) => handledForm("cui", text)}
             />
             <View style={{ flexDirection: 'row' }}>
                 <Text>Fecha de registro: </Text>
@@ -85,7 +83,7 @@ export default function MatriculaForm() {
                     <TextInput
                         placeholder="dd/mm/aa"
                         value={fechaRegistro}
-                        onChangeText={handledForm}
+                        onChangeText={(text) => handledForm("fechaRegistro", text)}
                         editable={false}
                     />
                 </Pressable>
