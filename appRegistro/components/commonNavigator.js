@@ -13,30 +13,30 @@ export default function Navigation() {
         <NavigationContainer>
             <Tab.Navigator>
                 <Tab.Screen
-                    name="Home"
+                    name="Cursos"
                     component={CursoList}
                     options={{
-                        tabBarLabel: 'Home',
+                        tabBarLabel: 'Cursos',
                         tabBarIcon: ({ color, size }) => (
-                            <Ionicons name='home' color={color} size={size} />
+                            <Ionicons name='book' color={color} size={size} />
                         ),
                     }} />
                 <Tab.Screen
-                    name="Create"
+                    name="Inscripcion"
                     component={MatriculaForm}
                     options={{
-                        tabBarLabel: 'Create',
+                        tabBarLabel: 'Inscripcion',
                         tabBarIcon: ({ color, size }) => (
                             <Ionicons name='create' color={color} size={size} />
                         ),
                     }} />
                 <Tab.Screen
-                    name="List"
+                    name="Alumnos"
                     component={MatriculaList}
                     options={{
-                        tabBarLabel: 'List',
+                        tabBarLabel: 'Alumnos',
                         tabBarIcon: ({ color, size }) => (
-                            <Ionicons name='list' color={color} size={size} />
+                            <Ionicons name='person' color={color} size={size} />
                         ),
                     }} />
             </Tab.Navigator>
