@@ -11,30 +11,20 @@
   "dependencies": {
     "@expo/webpack-config": "^19.0.0",
     "@react-native-community/datetimepicker": "7.2.0",
-<<<<<<< HEAD
-=======
     "@react-native-picker/picker": "^2.5.1",
->>>>>>> 7999222faf3bb6d74555deaf4493107089a99317
     "@react-navigation/bottom-tabs": "^6.5.9",
     "@react-navigation/native": "^6.1.8",
     "@types/react": "~18.2.14",
     "expo": "~49.0.13",
-<<<<<<< HEAD
     "expo-sqlite": "^11.6.0",
-=======
-    "expo-sqlite": "~11.3.3",
->>>>>>> 7999222faf3bb6d74555deaf4493107089a99317
     "expo-status-bar": "~1.6.0",
     "expo-web-browser": "~12.3.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "^0.72.5",
     "react-native-datepicker": "^1.7.2",
-<<<<<<< HEAD
-=======
     "react-native-gesture-handler": "^2.13.1",
     "react-native-reanimated": "^3.5.4",
->>>>>>> 7999222faf3bb6d74555deaf4493107089a99317
     "react-native-web": "~0.19.6"
   },
   "devDependencies": {
