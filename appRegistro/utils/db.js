@@ -1,11 +1,11 @@
-import { openDatabase  } from "expo-sqlite";
+import { openDatabase } from "expo-sqlite";
 import * as SQLite from 'expo-sqlite';
 
 const DATABASE_NAME = 'matriculas.db';
 
 export const getDBConnection = async () => {
-    try{
-        const db = await openDatabase({name: DATABASE_NAME, location: 'default'});
+    try {
+        const db = await openDatabase({ name: DATABASE_NAME, location: 'default' });
         return db;
     }
     catch (error) {
@@ -52,6 +52,7 @@ export const getAlumnos = (db, successCallback, errorCallback) => {
             [],
             (_, { rows }) => {
                 const data = rows._array;
+                console.log(data);
                 successCallback(data);
             },
             (error) => {
@@ -60,7 +61,40 @@ export const getAlumnos = (db, successCallback, errorCallback) => {
         );
     });
 };
+export async function getAllAlumnos() {
+    const db = await getDBConnection();
+    const selectQuery = 'SELECT * FROM alumnos';
+
+    return new Promise((resolve, reject) => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                selectQuery,
+                [],
+                (_, { rows }) => {
+                    const result = [];
+                    for (let i = 0; i < rows.length; i++) {
+                        result.push(rows.item(i));
+                    }
+                    resolve(result);
+                },
+                (_, error) => {
+                    reject(error);
+                }
+            );
+        });
+    });
+}
 
 
-
-
+export const getAlumnosMatriculados = (db) => {
+    return new Promise((resolve, reject) => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                "SELECT * FROM alumnos",
+                [],
+                (txtObj, resultSet) => resolve(resultSet.rows._array),
+                (txtObj, error) => reject(error)
+            );
+        });
+    });
+};

@@ -8,9 +8,11 @@ import {
   Platform,
   StyleSheet,
   ScrollView,
+  Alert,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { FontAwesome5 } from '@expo/vector-icons'; // Importamos FontAwesome5
+import { getDBConnection, insertAlumnos } from '../utils/db';
 
 export default function MatriculaForm() {
   const [date, setDate] = useState(new Date());
@@ -19,8 +21,7 @@ export default function MatriculaForm() {
     nombres: '',
     apellidos: '',
     cui: '',
-    curso: '',
-    regular: false,
+    curso: 'Matematicas',
     fechaRegistro: '',
   });
 
@@ -29,7 +30,6 @@ export default function MatriculaForm() {
     apellidos,
     cui,
     curso,
-    regular,
     fechaRegistro,
   } = matriculado;
 
@@ -65,6 +65,27 @@ export default function MatriculaForm() {
       ...matriculado,
       [name]: value,
     });
+  };
+
+  const handleRegistro = async () => {
+    const { nombres, apellidos, cui, fechaRegistro, curso } = matriculado;
+    if (nombres && apellidos && cui) {
+      const db = await getDBConnection();
+      await insertAlumnos(db, nombres, apellidos, parseInt(cui), fechaRegistro, curso);
+      // Limpia el estado después de la inserción.
+      setMatriculado({
+        nombres: '',
+        apellidos: '',
+        cui: '',
+        curso: '',
+        fechaRegistro: '',
+      });
+
+      Alert.alert('Matrícula Exitosa', 'El alumno se ha registrado correctamente.');
+    } else {
+      // Manejar el caso en el que algún campo esté vacío o haya errores.
+      console.log('Por favor, complete todos los campos.');
+    }
   };
 
   return (
@@ -113,14 +134,14 @@ export default function MatriculaForm() {
             <Pressable onPress={toggleDatepicker}>
               <TextInput
                 style={styles.dateInput}
-                placeholder="Seleccionar fecha"
+                placeholder="Seleccionar fecha   "
                 value={fechaRegistro}
                 onChangeText={(text) => handledForm('fechaRegistro', text)}
                 editable={false}
               />
             </Pressable>
           </View>
-          <Pressable style={styles.button} onPress={() => {}}>
+          <Pressable style={styles.button} onPress={handleRegistro}>
             <Text style={styles.buttonText}>Registrar Matrícula</Text>
           </Pressable>
         </View>
@@ -181,7 +202,7 @@ const styles = StyleSheet.create({
   },
   dateInput: {
     flex: 1,
-    height: 40,
+    height: 60,
     color: '#333333',
     backgroundColor: 'white',
     borderRadius: 20,

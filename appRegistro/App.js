@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import Navigation from './components/commonNavigator';
-import { initDatabase } from './utils/db';
+import { getDBConnection, initDatabase } from './utils/db';
 
 export default function App() {
-  useEffect( 
-    function(){
+  useEffect(
+    function () {
       async function init() {
         await initDatabase();
       }
