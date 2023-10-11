@@ -13,6 +13,7 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { FontAwesome5 } from '@expo/vector-icons'; // Importamos FontAwesome5
 import { getDBConnection, insertAlumnos } from '../utils/db';
+import { Picker } from '@react-native-picker/picker';
 
 export default function MatriculaForm() {
   const [date, setDate] = useState(new Date());
@@ -21,7 +22,7 @@ export default function MatriculaForm() {
     nombres: '',
     apellidos: '',
     cui: '',
-    curso: 'Matematicas',
+    curso: '',
     fechaRegistro: '',
   });
 
@@ -121,25 +122,39 @@ export default function MatriculaForm() {
               onChangeText={(text) => handledForm('cui', text)}
             />
           </View>
+          
+          <View style={styles.inputContainer}>
+            <FontAwesome5 name="book" style={styles.icon} />
+            <Picker
+              style={styles.picker}
+              selectedValue={curso}
+              onValueChange={(itemValue, itemIndex) => handledForm('curso', itemValue)}>
+              <Picker.Item label="Data Structures" value="Data Structures" />
+              <Picker.Item label="Web Development" value="Web Development" />
+              <Picker.Item label="Database Design" value="Database Design" />
+            </Picker>
+          </View>
+
           <View style={styles.dateContainer}>
             <FontAwesome5 name="calendar" style={styles.dateIcon} />
-            {showPicker && (
-              <DateTimePicker
-                mode="date"
-                display="spinner"
-                value={date}
-                onChange={onChange}
-              />
-            )}
-            <Pressable onPress={toggleDatepicker}>
-              <TextInput
-                style={styles.dateInput}
-                placeholder="Seleccionar fecha   "
-                value={fechaRegistro}
-                onChangeText={(text) => handledForm('fechaRegistro', text)}
-                editable={false}
-              />
-            </Pressable>
+              {showPicker && (
+                <DateTimePicker
+                  mode="date"
+                  display="spinner"
+                  value={date}
+                  onChange={onChange}
+                />
+              )}
+              <Pressable onPress={toggleDatepicker}>
+                <TextInput
+                  style={styles.dateInput}
+                  placeholder="Seleccionar fecha   "
+                  value={fechaRegistro}
+                  onChangeText={(text) => handledForm('fechaRegistro', text)}
+                  editable={false}
+                />
+              </Pressable>
+
           </View>
           <Pressable style={styles.button} onPress={handleRegistro}>
             <Text style={styles.buttonText}>Registrar Matrícula</Text>
@@ -153,6 +168,12 @@ export default function MatriculaForm() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  picker: {
+    height: 30,
+    width: 240,
+    backgroundColor: 'white',
+    borderRadius: 20,
   },
   centered: {
     flex: 1,
@@ -194,6 +215,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 24,
+    height: 40,
   },
   dateIcon: {
     fontSize: 20,
@@ -202,7 +224,7 @@ const styles = StyleSheet.create({
   },
   dateInput: {
     flex: 1,
-    height: 60,
+    height: 70,
     color: '#333333',
     backgroundColor: 'white',
     borderRadius: 20,

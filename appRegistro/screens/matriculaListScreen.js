@@ -1,10 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, FlatList } from 'react-native';
+import { Text, View, StyleSheet, FlatList, Button, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { getAllAlumnos } from '../utils/db';
+import { getDBConnection, getAllAlumnos, createTables } from '../utils/db';
 
 export default function MatriculaList() {
     const [dataSource, setDataSource] = useState();
+
+    const handleDeleteDatabase = async () => {
+        try {
+            const db = await getDBConnection();
+            // Obtén todos los alumnos antes de eliminar la base de datos
+            const alumnos = await getAllAlumnos();
+            
+            // Elimina la base de datos completa
+            db.transaction((tx) => {
+                tx.executeSql('DROP TABLE IF EXISTS alumnos', [], () => {
+                    console.log('Base de datos eliminada exitosamente');
+                    // Luego de eliminar la base de datos, puedes recrear las tablas
+                    createTables();
+                }, (error) => {
+                    console.error('Error al eliminar la base de datos:', error);
+                });
+            });
+
+            // Ahora puedes hacer algo con los datos de los alumnos si es necesario
+            console.log('Datos de alumnos antes de eliminar la base de datos:', alumnos);
+        } catch (error) {
+            console.error('Error al eliminar la base de datos:', error);
+        }
+    };
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -62,8 +87,17 @@ export default function MatriculaList() {
         },
     });
 
+    const handleDeleteItem = (cui) => {
+        // Filtra los elementos para excluir el que se va a borrar por su cui
+        const updatedDataSource = dataSource.filter(item => item.cui !== cui);
+        setDataSource(updatedDataSource);
+        // Aquí también puedes realizar la lógica para eliminar el elemento de tu base de datos.
+    };
+    
     return (
-        <View>
+    <ScrollView>
+        <View style={{ overflowY: 'scroll' }}> 
+            {dataSource && dataSource.length > 0 ? (
             <FlatList
                 style={{ marginTop: 10 }}
                 data={dataSource}
@@ -82,6 +116,12 @@ export default function MatriculaList() {
                     </View>
                 )}
             />
+            ) : (
+                <Text>No se encontraron elementos.</Text>
+            )}
+            <Button title="Borrar Base de Datos" onPress={handleDeleteDatabase} />
         </View>
+    </ScrollView>
+
     );
 }

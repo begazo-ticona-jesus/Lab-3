@@ -61,6 +61,7 @@ export const getAlumnos = (db, successCallback, errorCallback) => {
         );
     });
 };
+
 export async function getAllAlumnos() {
     const db = await getDBConnection();
     const selectQuery = 'SELECT * FROM alumnos';
